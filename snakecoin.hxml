@@ -1,3 +1,5 @@
- -cp src
- -neko bin/snakecoin.n
- -main SnakeCoinMain
+-lib tink_web
+-lib hxnodejs
+-cp src
+-js bin/snakecoin.js
+-main SnakeCoinMain

@@ -1,53 +1,19 @@
 package;
+import tink.http.Response.OutgoingResponse;
+import tink.web.routing.Context;
+import tink.web.routing.Router;
 
-import haxe.crypto.Sha256;
-import neko.Lib;
 
 class SnakeCoinMain {
-	
+
 	static function main() {
 		
-		new SnakeCoinMain();
-	}
-	
-	function createGenesisBlock():Block {
+		var router = new Router<Root>( new Root());
 		
-		// Manually construct a block with
-		// index zero and arbitrary previous hash
-		return new Block( 0, 'Genesis Block', "0" );
-	}
-	
-	function nextBlock( lastBlock:Block ):Block {
+		var container = new tink.http.containers.NodeContainer( 5000 );
+		container.run( function( req ) return router.route( Context.ofRequest( req )).recover( OutgoingResponse.reportError ));
 		
-		var index = lastBlock.index + 1;
-		var data = "Hey! I'm block " + Std.string( index );
-		var previousHash = lastBlock.hash;
-		
-		return new Block( index, data, previousHash );
-	}
-	
-	public function new() {
-		
-		// Create the blockchain and add the genesis block
-		var blockchain = [ createGenesisBlock() ];
-		var prevousBlock = blockchain[0];
-		
-		// How many blocks should we add to the chain
-		// after the genesis block
-		var numOfBlocksToAdd = 5;
-		
-		// Add blocks to the chain
-		for ( i in 0...numOfBlocksToAdd ) {
-			
-			var blockToAdd = nextBlock( prevousBlock );
-			blockchain.push( blockToAdd );
-			prevousBlock = blockToAdd;
-			
-			// Tell everyone about it!
-			trace( 'Block #${blockToAdd.index} has been added to the blockchain!' );
-			trace( 'Hash ${blockToAdd.hash}\n' );
-		}
-		
+		trace( "SnakeCoin server listening on http://localhost:5000/" );
 	}
 	
 }

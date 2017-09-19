@@ -1,4 +1,4 @@
-package;
+package data;
 import haxe.Json;
 import haxe.crypto.Sha256;
 
@@ -7,11 +7,11 @@ class Block {
 
 	public var index:Int;
 	public var timestamp:Float;
-	public var data:String;
+	public var data:BlockData;
 	public var previousHash:String;
 	public var hash:String;
 	
-	public function new( index:Int, data:String, previousHash:String ) {
+	public function new( index:Int, data:BlockData, previousHash:String ) {
 		
 		this.index = index;
 		this.timestamp = Date.now().getTime();
@@ -25,6 +25,6 @@ class Block {
 	}
 	
 	public function toString():String {
-		return Std.string( index ) + Std.string( timestamp ) + data + previousHash;
+		return 'index: ${Std.string( index )}\ntime: ${Std.string( timestamp )}\ndata: ${Std.string( data )}\nhash: $hash';
 	}
 }
